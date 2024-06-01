@@ -1,9 +1,14 @@
 package com.strawhats.RecruitmentPortal.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 
+@Service
 public class UserService {
+	@Autowired
 	UserRepository userRepository;
 	
 	public User registerUser(User user) {
