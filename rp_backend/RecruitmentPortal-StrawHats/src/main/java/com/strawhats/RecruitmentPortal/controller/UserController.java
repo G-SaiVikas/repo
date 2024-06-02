@@ -22,12 +22,22 @@ public class UserController {
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		
 	
-	try {
-        User registeredUser = userService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
-    } catch (EmailAlreadyExistsException e) {
-        return ResponseEntity.status(409).body(e.getMessage());
-    }
+		try {
+	        User registeredUser = userService.registerUser(user);
+	        return ResponseEntity.ok(registeredUser);
+	    } catch (EmailAlreadyExistsException e) {
+	        return ResponseEntity.status(409).body(e.getMessage());
+	    }
 	
-}
+	}
+	
+	@PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody User user) {
+        User loggedInUser = userService.loginUser(user.getEmail(), user.getPassword());
+        if (loggedInUser != null) {
+            return ResponseEntity.ok(loggedInUser);
+        } else {
+            return ResponseEntity.status(401).body(null);
+        }
+    }
 }
