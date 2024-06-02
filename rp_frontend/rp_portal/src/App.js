@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<SignUp />} />
         <Route path="/about" element={<About />} />
-        
+        <Route path="/" element={<About />} />
       </Routes>
       </BrowserRouter>
     </div>
