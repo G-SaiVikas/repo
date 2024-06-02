@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.service.UserService;
+import com.strawhats.service.EmailAlreadyExistsException;
 
 @RestController
 @RequestMapping("/users")
@@ -18,11 +19,14 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@RequestBody User user) {
+	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		
-		User registeredUser = userService.registerUser(user);
-		
-		return ResponseEntity.ok(registeredUser);
 	}
+	try {
+        User registeredUser = userService.registerUser(user);
+        return ResponseEntity.ok(registeredUser);
+    } catch (EmailAlreadyExistsException e) {
+        return ResponseEntity.status(409).body(e.getMessage());
+    }
 	
 }
