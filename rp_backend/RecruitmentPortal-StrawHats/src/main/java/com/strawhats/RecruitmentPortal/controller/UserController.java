@@ -22,8 +22,6 @@ import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.security.JWTGenerator;
 import com.strawhats.RecruitmentPortal.service.UserService;
-import com.strawhats.RecruitmentPortal.model.MailStructure;
-import com.strawhats.RecruitmentPortal.service.MailService;
 import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
 
 @RestController
@@ -32,12 +30,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-    private MailService mailService;
-    
-    @Autowired
-    private MailStructure mailStructure;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -93,30 +85,6 @@ public class UserController {
         return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
 	}
 	
-	 @GetMapping("/forgotpassword")
-	    public ResponseEntity<User> forgotPassword(@RequestParam String fullName, @RequestParam String phoneNumber) {
-	    	System.out.println("Hello");
-	    	User userVerified = userService.verifyUser(fullName, phoneNumber);
-	    	System.out.println("hi "+ userVerified);
-	        if (userVerified != null) {
-	        	mailStructure.setSubject("Reset Password - Recruitment Portal");
-	        	String body = "Dear " + fullName + ",\n" +
-	                    	  "To reset your password, please visit \n http://localhost:8080/users/resetpassword?id=" + userVerified.getId() + "";
-	        	mailStructure.setMessage(body);
-	        	mailService.sendMail(userVerified.getEmail(), mailStructure);
-	            return ResponseEntity.ok(userVerified);
-	        } else {
-	            return ResponseEntity.status(404).body(null);
-	        }
-	    }
+	
 	 
-	 @PutMapping("/resetpassword")
-	    public ResponseEntity<User> resetPassword(@RequestParam Long id, @RequestParam String newPassword) {
-	        User updatedUser = userService.updateUser(id, newPassword);
-	        if (updatedUser != null) {
-	            return ResponseEntity.ok(updatedUser);
-	        } else {
-	            return ResponseEntity.status(401).body(null);
-	        }
-	    }
 }

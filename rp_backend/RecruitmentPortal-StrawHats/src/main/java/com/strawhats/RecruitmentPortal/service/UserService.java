@@ -27,12 +27,6 @@ public class UserService {
         return null;
     }
 	
-	public User verifyUser(String fullName, String phoneNumber) {
-		return new User();
-    }
-	
-	public User updateUser(Long id, String newPassword) {
-    	return new User();
-    }
+
 
 }
