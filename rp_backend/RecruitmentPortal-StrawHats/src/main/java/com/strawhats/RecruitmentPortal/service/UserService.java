@@ -1,5 +1,7 @@
 package com.strawhats.RecruitmentPortal.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,11 @@ public class UserService {
 	}
 	
 	public User loginUser(String email, String password) {
-        User user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         
 //        System.out.println(user + "" + email);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+        if (user != null && user.get().getPassword().equals(password)) {
+            return user.get();
         }
         return null;
     }
