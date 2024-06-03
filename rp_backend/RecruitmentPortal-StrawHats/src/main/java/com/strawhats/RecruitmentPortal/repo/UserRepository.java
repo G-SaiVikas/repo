@@ -12,6 +12,7 @@ import com.strawhats.RecruitmentPortal.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
+    User findByFullNameAndPhoneNumber(String fullName, String phoneNumber);
 }
 
 
