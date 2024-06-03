@@ -109,4 +109,14 @@ public class UserController {
 	            return ResponseEntity.status(404).body(null);
 	        }
 	    }
+	 
+	 @PutMapping("/resetpassword")
+	    public ResponseEntity<User> resetPassword(@RequestParam Long id, @RequestParam String newPassword) {
+	        User updatedUser = userService.updateUser(id, newPassword);
+	        if (updatedUser != null) {
+	            return ResponseEntity.ok(updatedUser);
+	        } else {
+	            return ResponseEntity.status(401).body(null);
+	        }
+	    }
 }
