@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 @Component
 public class JWTGenerator {
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);

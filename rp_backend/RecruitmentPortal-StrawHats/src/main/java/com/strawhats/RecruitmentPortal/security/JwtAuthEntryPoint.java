@@ -1,7 +1,6 @@
 package com.strawhats.RecruitmentPortal.security;
 
 import java.io.IOException;
-import javax.naming.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
