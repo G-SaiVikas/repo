@@ -10,8 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
@@ -20,6 +22,8 @@ import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.security.JWTGenerator;
 import com.strawhats.RecruitmentPortal.service.UserService;
+import com.strawhats.RecruitmentPortal.model.MailStructure;
+import com.strawhats.RecruitmentPortal.service.MailService;
 import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
 
 @RestController
@@ -28,6 +32,12 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+    private MailService mailService;
+    
+    @Autowired
+    private MailStructure mailStructure;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -82,4 +92,21 @@ public class UserController {
         String token = jwtGenerator.generateToken(authentication);
         return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
 	}
+	
+	 @GetMapping("/forgotpassword")
+	    public ResponseEntity<User> forgotPassword(@RequestParam String fullName, @RequestParam String phoneNumber) {
+	    	System.out.println("Hello");
+	    	User userVerified = userService.verifyUser(fullName, phoneNumber);
+	    	System.out.println("hi "+ userVerified);
+	        if (userVerified != null) {
+	        	mailStructure.setSubject("Reset Password - Recruitment Portal");
+	        	String body = "Dear " + fullName + ",\n" +
+	                    	  "To reset your password, please visit \n http://localhost:8080/users/resetpassword?id=" + userVerified.getId() + "";
+	        	mailStructure.setMessage(body);
+	        	mailService.sendMail(userVerified.getEmail(), mailStructure);
+	            return ResponseEntity.ok(userVerified);
+	        } else {
+	            return ResponseEntity.status(404).body(null);
+	        }
+	    }
 }

@@ -26,5 +26,9 @@ public class UserService {
         }
         return null;
     }
+	
+	public User verifyUser(String fullName, String phoneNumber) {
+		return new User();
+    }
 
 }
