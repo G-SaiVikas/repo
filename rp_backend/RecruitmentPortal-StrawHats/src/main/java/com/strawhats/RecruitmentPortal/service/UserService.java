@@ -31,8 +31,12 @@ public class UserService {
     	return userRepository.findByFullNameAndPhoneNumber(fullName, phoneNumber);
     }
     
-    public User updateUser(Long id, String newPassword) {
-    	return new User();
+	public User updateUser(Long id, String newPassword) {
+    	Optional<User> retrievedUser = userRepository.findById(id);
+    	User user = retrievedUser.get();
+    	user.setPassword(newPassword);
+    	userRepository.save(user);
+    	return user;
     }
 	
 
