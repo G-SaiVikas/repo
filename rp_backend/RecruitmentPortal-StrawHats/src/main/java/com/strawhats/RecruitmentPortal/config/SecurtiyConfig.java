@@ -55,20 +55,20 @@ public class SecurtiyConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
 //                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(httpBasic -> httpBasic.realmName("Recruitment").authenticationEntryPoint(authEntryPoint))
-                .logout(logout -> logout.permitAll());
+                .httpBasic();
+//                .logout(logout -> logout.permitAll());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-	public Filter jwtAuthenticationFilter() {
+	 Filter jwtAuthenticationFilter() {
         return new JWTAuthenticationFilter();
 	}
 	@Bean
-    public CorsFilter corsFilter() {
+     CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
@@ -79,11 +79,11 @@ public class SecurtiyConfig {
         return new CorsFilter(source);
     }
 	@Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 	@Bean
-    public PasswordEncoder passwordEncoder() {
+     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
