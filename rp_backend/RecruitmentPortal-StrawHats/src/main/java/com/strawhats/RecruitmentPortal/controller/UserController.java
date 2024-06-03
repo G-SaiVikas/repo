@@ -90,7 +90,7 @@ public class UserController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token,loginDto.getEmail()), HttpStatus.OK);
 	}
 	
 	@GetMapping("/forgotpassword")
