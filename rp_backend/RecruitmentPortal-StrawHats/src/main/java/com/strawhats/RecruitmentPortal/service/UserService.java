@@ -28,7 +28,7 @@ public class UserService {
     }
 	
 	public User verifyUser(String fullName, String phoneNumber) {
-    	return new User();
+    	return userRepository.findByFullNameAndPhoneNumber(fullName, phoneNumber);
     }
     
     public User updateUser(Long id, String newPassword) {
