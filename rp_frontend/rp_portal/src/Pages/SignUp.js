@@ -26,7 +26,7 @@ export default class Login extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        axios.post('http://localhost:8080/api/users/register', {
+        axios.post('http://localhost:8080/users/register', {
             fullName: this.state.name,
             email: this.state.email,
             password: this.state.password,

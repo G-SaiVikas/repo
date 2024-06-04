@@ -1,8 +1,11 @@
 import './App.css';
 import SignUp from './Pages/SignUp';
 import About from './Pages/About';
+import ResetPassword from './ResetPassword';
 import { Routes, Route, BrowserRouter } from'react-router-dom';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 
 function App() {
   return (
@@ -24,7 +27,12 @@ function App() {
       <Routes>
         <Route path="/register" element={<SignUp />} />
         <Route path="/about" element={<About />} />
-        <Route path="/" element={<About />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword/>} />
+        
       </Routes>
       </BrowserRouter>
     </div>
