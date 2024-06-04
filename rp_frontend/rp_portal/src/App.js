@@ -1,11 +1,12 @@
 import './App.css';
 import SignUp from './Pages/SignUp';
 import About from './Pages/About';
-import ResetPassword from './ResetPassword';
 import { Routes, Route, BrowserRouter } from'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
+import Login from './Pages/Login';
+import User from './Pages/User';
 
 function App() {
   return (
