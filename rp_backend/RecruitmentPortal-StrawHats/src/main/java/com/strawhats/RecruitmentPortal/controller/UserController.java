@@ -72,26 +72,16 @@ public class UserController {
 	
 	}
 	
-//	@GetMapping("/login")
-//    public ResponseEntity<User> loginUser(@RequestBody User user) {
-//        User loggedInUser = userService.loginUser(user.getEmail(), user.getPassword());
-//        if (loggedInUser != null) {
-//            return ResponseEntity.ok(loggedInUser);
-//        } else {
-//            return ResponseEntity.status(401).body(null);
-//        }
-//    }
 	
 	@GetMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
-//        System.out.println("Inside Login API");
+    public ResponseEntity<AuthResponseDTO> login(@RequestParam String email, @RequestParam String password) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
+                new UsernamePasswordAuthenticationToken(email, password)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token,loginDto.getEmail()), HttpStatus.OK);
-	}
+        return new ResponseEntity<>(new AuthResponseDTO(token, email), HttpStatus.OK);
+    }
 	
 	@GetMapping("/forgotpassword")
     public ResponseEntity<User> forgotPassword(@RequestParam String fullName, @RequestParam String phoneNumber) {
@@ -101,7 +91,7 @@ public class UserController {
         if (userVerified != null) {
         	mailStructure.setSubject("Reset Password - Recruitment Portal");
         	String body = "Dear " + fullName + ",\n" +
-                    	  "To reset your password, please visit \n http://localhost:8080/users/resetpassword?id=" + userVerified.getId() + "";
+                    	  "To reset your password, please visit \n http://localhost:3000/resetpassword";
         	mailStructure.setMessage(body);
         	mailService.sendMail(userVerified.getEmail(), mailStructure);
             return ResponseEntity.ok(userVerified);

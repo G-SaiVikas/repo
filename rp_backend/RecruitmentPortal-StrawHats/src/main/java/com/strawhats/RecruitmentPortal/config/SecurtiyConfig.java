@@ -1,7 +1,5 @@
 package com.strawhats.RecruitmentPortal.config;
 
-import java.beans.Customizer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,67 +21,58 @@ import com.strawhats.RecruitmentPortal.security.JwtAuthEntryPoint;
 
 import jakarta.servlet.Filter;
 
-@SuppressWarnings("unused")
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 public class SecurtiyConfig {
 
-//    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable())
-//            .cors()
-//            .and()
-//            .authorizeRequests(authorize -> authorize.anyRequest().permitAll());
-//        return http.build();
-//    }
-	private CustomerDetailsService customerDetailsService;
-    private JwtAuthEntryPoint authEntryPoint;
+    private final CustomerDetailsService customerDetailsService;
+    private final JwtAuthEntryPoint authEntryPoint;
 
     @Autowired
     public SecurtiyConfig(CustomerDetailsService customerDetailsService, JwtAuthEntryPoint authEntryPoint) {
         this.customerDetailsService = customerDetailsService;
         this.authEntryPoint = authEntryPoint;
     }
-	@SuppressWarnings("removal")
-	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        System.out.println("in the security filter chain bean");
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors().and()
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
-//                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/**").permitAll()
-                        .anyRequest().authenticated())
-                .httpBasic();
-//                .logout(logout -> logout.permitAll());
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS configuration
+            .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/users/**").permitAll()
+                .anyRequest().authenticated())
+            .httpBasic();
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-	 Filter jwtAuthenticationFilter() {
+    public Filter jwtAuthenticationFilter() {
         return new JWTAuthenticationFilter();
-	}
-	@Bean
-     CorsFilter corsFilter() {
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
-	@Bean
-     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-	@Bean
-     PasswordEncoder passwordEncoder() {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
