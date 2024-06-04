@@ -64,26 +64,17 @@ public class UserController {
 	
 	}
 	
-//	@GetMapping("/login")
-//    public ResponseEntity<User> loginUser(@RequestBody User user) {
-//        User loggedInUser = userService.loginUser(user.getEmail(), user.getPassword());
-//        if (loggedInUser != null) {
-//            return ResponseEntity.ok(loggedInUser);
-//        } else {
-//            return ResponseEntity.status(401).body(null);
-//        }
-//    }
+
 	
 	@GetMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
-//        System.out.println("Inside Login API");
+    public ResponseEntity<AuthResponseDTO> login(@RequestParam String email, @RequestParam String password) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
+                new UsernamePasswordAuthenticationToken(email, password)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
-	}
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+    }
 	
 	
 	 

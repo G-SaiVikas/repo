@@ -28,16 +28,9 @@ import jakarta.servlet.Filter;
 @Configuration
 public class SecurtiyConfig {
 
-//    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable())
-//            .cors()
-//            .and()
-//            .authorizeRequests(authorize -> authorize.anyRequest().permitAll());
-//        return http.build();
-//    }
-	private CustomerDetailsService customerDetailsService;
-    private JwtAuthEntryPoint authEntryPoint;
+
+	private final CustomerDetailsService customerDetailsService;
+    private final JwtAuthEntryPoint authEntryPoint;
 
     @Autowired
     public SecurtiyConfig(CustomerDetailsService customerDetailsService, JwtAuthEntryPoint authEntryPoint) {
@@ -51,7 +44,7 @@ public class SecurtiyConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors().and()
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
 //                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -67,16 +60,16 @@ public class SecurtiyConfig {
 	 Filter jwtAuthenticationFilter() {
         return new JWTAuthenticationFilter();
 	}
-	@Bean
-     CorsFilter corsFilter() {
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 	@Bean
      AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
