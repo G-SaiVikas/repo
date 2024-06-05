@@ -42,6 +42,7 @@ public class SecurtiyConfig {
             .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/users/**").permitAll()
+                .requestMatchers("/jobs/**").permitAll()
                 .anyRequest().authenticated())
             .httpBasic();
 
