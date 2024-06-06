@@ -10,22 +10,30 @@ export default class UserPage extends Component {
     this.state = {
       isloggedin: localStorage.getItem('jwtToken') !== null,
       userId: localStorage.getItem('userId'),
-      jobs: []
+      jobs: [],
+      searchSkill: '',
+      filteredJobs: []
     };
 
     this.logout = this.logout.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.searchJobs = this.searchJobs.bind(this);
   }
 
   componentDidMount() {
     if (this.state.isloggedin) {
-      axios.get('http://localhost:8080/jobs/getjobs')
-        .then(response => {
-          this.setState({ jobs: response.data });
-        })
-        .catch(error => {
-          console.error("There was an error fetching the jobs!", error);
-        });
+      this.fetchAllJobs();
     }
+  }
+
+  fetchAllJobs() {
+    axios.get('http://localhost:8080/jobs/getjobs')
+      .then(response => {
+        this.setState({ jobs: response.data, filteredJobs: response.data });
+      })
+      .catch(error => {
+        console.error("There was an error fetching the jobs!", error);
+      });
   }
 
   logout() {
@@ -33,29 +41,53 @@ export default class UserPage extends Component {
     this.setState({ isloggedin: false });
   }
 
-  applyToJob(jobId) {
-    // Handle the apply to job action here, e.g., send a request to the backend
-    console.log(`Applying to job ID: ${jobId}`);
+  handleSearchChange(event) {
+    this.setState({ searchSkill: event.target.value });
+  }
+
+  searchJobs() {
+    if (this.state.searchSkill.trim() === '') {
+      this.setState({ filteredJobs: this.state.jobs });
+    } else {
+      axios.get(`http://localhost:8080/jobs/searchJob`, { params: { skill: this.state.searchSkill } })
+        .then(response => {
+          this.setState({ filteredJobs: response.data });
+        })
+        .catch(error => {
+          console.error("There was an error searching for jobs!", error);
+        });
+    }
   }
 
   render() {
     if (!this.state.isloggedin) {
       return <Navigate to="/login" />;
     }
+
     const cardStyle = {
       paddingTop: '20px',
       paddingBottom: '20px'
     };
-
 
     return (
       <div className="container py-5">
         <h1 className="text-center">Hi, {this.state.userId}</h1>
         <button onClick={this.logout} className="btn btn-danger mt-3 mb-5">Logout</button>
 
+        <div className="mb-4">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search by skill"
+            value={this.state.searchSkill}
+            onChange={this.handleSearchChange}
+          />
+          <button onClick={this.searchJobs} className="btn btn-primary mt-2">Search</button>
+        </div>
+
         <div className="row">
-          {this.state.jobs.map(job => (
-            <div className="col-md-4 " style={cardStyle} key={job.id}>
+          {this.state.filteredJobs.map(job => (
+            <div className="col-md-4"  style={cardStyle} key={job.id}>
               <div className="card mb-4 shadow-sm h-100 bg-light">
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{job.jobTitle}</h5>
