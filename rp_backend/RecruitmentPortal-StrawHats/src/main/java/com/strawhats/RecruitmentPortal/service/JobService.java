@@ -20,5 +20,8 @@ public class JobService {
     public List<Job> getAllJobs() {
     	return jobRepository.findAll();
     }
+    public List<Job> searchJob(String skill){
+    	return jobRepository.findBySkillsRequiredContaining(skill);
+    }
     
 }
