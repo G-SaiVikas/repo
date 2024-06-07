@@ -4,14 +4,21 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+//import com.example.demo.model.User;
+//import com.example.demo.repository.UserRepository;
+ 
+import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 
 @Service
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	JobRepository jobRepository;
 	
 	public User registerUser(User user) {
 		return userRepository.save(user);
@@ -39,10 +46,14 @@ public class UserService {
     	return user;
     }
 
-	public void applyForJob(Long id, Long id2) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void applyForJob(Long userId, Long jobId) {
+  	  User user = userRepository.findById(userId).get();
+  	  Job job = jobRepository.findById(jobId).get();
+  	  user.getAppliedJobs().add(job);
+  	  job.getApplicants().add(user);
+  	  userRepository.save(user);
+  	  jobRepository.save(job);
+  }
 	
 
 
