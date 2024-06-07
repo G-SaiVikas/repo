@@ -111,5 +111,13 @@ public class UserController {
         }
     }
 	
+	@PostMapping("/jobs/apply")
+    public ResponseEntity<Void> applyForJob(@RequestParam Long id, @RequestBody User user) {
+    	
+      userService.applyForJob(user.getId(), id);
+      System.out.println("Applied job " + id + "user" + user.getId());
+      return ResponseEntity.ok().build();
+    }
+	
 	 
 }

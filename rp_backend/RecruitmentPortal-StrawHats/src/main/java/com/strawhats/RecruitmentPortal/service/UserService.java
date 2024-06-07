@@ -38,6 +38,11 @@ public class UserService {
     	userRepository.save(user);
     	return user;
     }
+
+	public void applyForJob(Long id, Long id2) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 
