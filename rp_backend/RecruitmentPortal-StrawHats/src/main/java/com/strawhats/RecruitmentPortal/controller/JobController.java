@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.service.JobService;
 
@@ -19,7 +20,7 @@ public class JobController {
     private JobService jobService;
 	
 	@GetMapping("/getjobs")
-	public List<Job> getAllJobs() {
+	public List<JobDTO> getAllJobs() {
 		return jobService.getAllJobs();
 	}
 	
