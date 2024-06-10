@@ -120,11 +120,14 @@ public class UserController {
     }
 	
 	@PostMapping("/jobs/apply")
-    public ResponseEntity<Void> applyForJob(@RequestParam Long id, @RequestParam Long user_id) {
-    	
-      userService.applyForJob(user_id, id);
-      System.out.println("Applied job " + id + "user" + user_id);
-      return ResponseEntity.ok().build();
+    public ResponseEntity<String> applyForJob(@RequestParam Long id, @RequestParam Long user_id) {
+        if (userService.hasUserAppliedForJob(user_id, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User has already applied for this job.");
+        }
+
+        userService.applyForJob(user_id, id);
+        System.out.println("Applied for job " + id + " by user " + user_id);
+        return ResponseEntity.ok("Job application successful.");
     }
 	
 	 
