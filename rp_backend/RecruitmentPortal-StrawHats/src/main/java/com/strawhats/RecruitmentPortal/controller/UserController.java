@@ -1,5 +1,6 @@
 package com.strawhats.RecruitmentPortal.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
 import com.strawhats.RecruitmentPortal.dto.LoginDto;
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.security.JWTGenerator;
 import com.strawhats.RecruitmentPortal.service.UserService;
+import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.service.MailService;
 import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
+import com.strawhats.RecruitmentPortal.service.JobService;
 
 @RestController
 @RequestMapping("/users")
@@ -49,6 +53,7 @@ public class UserController {
 	
 	@Autowired
     private MailService mailService;
+
     
     @Autowired
     private MailStructure mailStructure;
@@ -129,6 +134,7 @@ public class UserController {
         System.out.println("Applied for job " + id + " by user " + user_id);
         return ResponseEntity.ok("Job application successful.");
     }
+	
 	
 	 
 }

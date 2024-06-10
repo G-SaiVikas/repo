@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
+import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
 
 @Service
@@ -41,5 +42,10 @@ public class JobService {
     public List<Job> searchJob(String skill){
     	return jobRepository.findBySkillsRequiredContaining(skill);
     }
+
+	public List<Job> getAppliedJobs(User user) {
+		
+		return jobRepository.findByApplicants(user);
+	}
     
 }
