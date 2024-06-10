@@ -10,11 +10,15 @@ import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
+import com.strawhats.RecruitmentPortal.repo.UserRepository;
 
 @Service
 public class JobService {
     @Autowired
     private JobRepository jobRepository;
+    
+    @Autowired
+    UserRepository userRepository;
     
     public Job registerJob(Job job) {
         return jobRepository.save(job);
@@ -43,9 +47,11 @@ public class JobService {
     	return jobRepository.findBySkillsRequiredContaining(skill);
     }
 
-	public List<Job> getAppliedJobs(User user) {
+	public List<JobDTO> getAppliedJobs(Long user_id) {
 		
-		return jobRepository.findByApplicants(user);
+		return jobRepository.findByApplicants(userRepository.findById(user_id).get()).stream()
+							.map(this::convertToDTO)
+							.collect(Collectors.toList());
 	}
     
 }

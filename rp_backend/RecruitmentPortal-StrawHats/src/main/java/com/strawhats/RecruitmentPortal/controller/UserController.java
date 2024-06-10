@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.dto.LoginDto;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
@@ -53,7 +55,9 @@ public class UserController {
 	
 	@Autowired
     private MailService mailService;
-
+	
+	@Autowired
+	private JobService jobService;
     
     @Autowired
     private MailStructure mailStructure;
@@ -135,6 +139,20 @@ public class UserController {
         return ResponseEntity.ok("Job application successful.");
     }
 	
-	
+	@GetMapping("/getappliedjobs")
+    public List<JobDTO> getAppliedJobs(@RequestParam Long user_id) {
+		
+//    	jobService.getAppliedJobs(user).forEach(v->System.out.println(v.getApplicants()));
+    	
+//		List<Job> a = jobService.getAppliedJobs(user);
+//    	for(Job job : a) {
+////    		for(User x : job.getApplicants()) {
+////    			System.out.println(x.getId());
+////    		}
+//    		System.out.println(job.getId());
+//    	}
+    	return jobService.getAppliedJobs(user_id);
+
+	}
 	 
 }
