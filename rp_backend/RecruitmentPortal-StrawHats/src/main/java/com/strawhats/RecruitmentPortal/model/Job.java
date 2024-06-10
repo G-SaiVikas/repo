@@ -2,15 +2,19 @@ package com.strawhats.RecruitmentPortal.model;
 
 import java.util.List;
 
-import com.strawhats.RecruitmentPortal.model.Job;
-import com.strawhats.RecruitmentPortal.model.User;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 import lombok.Data;
-
+ 
+ 
 @Entity
 @Data
 public class Job {
@@ -30,4 +34,11 @@ public class Job {
 	private String location;
 	
 	private String salary;
+	
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	  @JoinTable(name = "job_applicants",
+	      joinColumns = @JoinColumn(name = "job_id"),
+	      inverseJoinColumns = @JoinColumn(name = "user_id"))
+	  private List<User> applicants;
 }

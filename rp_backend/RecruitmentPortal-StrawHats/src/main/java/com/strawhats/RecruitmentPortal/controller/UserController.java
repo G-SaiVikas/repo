@@ -1,5 +1,7 @@
 package com.strawhats.RecruitmentPortal.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +82,13 @@ public class UserController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDTO(token, email), HttpStatus.OK);
+//        if(userRepository.existsByEmail(email)) {
+//        	System.out.println(true);
+//        } else {
+//        	System.out.println(false);
+//        }
+        Optional<User> registeredUser = userRepository.findByEmail(email);
+        return new ResponseEntity<>(new AuthResponseDTO(token, registeredUser.get().getId(),email), HttpStatus.OK);
     }
 	
 	@GetMapping("/forgotpassword")
@@ -109,6 +117,17 @@ public class UserController {
         } else {
             return ResponseEntity.status(401).body(null);
         }
+    }
+	
+	@PostMapping("/jobs/apply")
+    public ResponseEntity<String> applyForJob(@RequestParam Long id, @RequestParam Long user_id) {
+        if (userService.hasUserAppliedForJob(user_id, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User has already applied for this job.");
+        }
+
+        userService.applyForJob(user_id, id);
+        System.out.println("Applied for job " + id + " by user " + user_id);
+        return ResponseEntity.ok("Job application successful.");
     }
 	
 	 

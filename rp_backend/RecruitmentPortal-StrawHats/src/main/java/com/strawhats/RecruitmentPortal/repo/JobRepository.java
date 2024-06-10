@@ -11,4 +11,5 @@ import com.strawhats.RecruitmentPortal.model.User;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
 	List<Job> findBySkillsRequiredContaining(String skill);
+	List<Job> findByApplicants(User user);
 }

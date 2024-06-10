@@ -59,6 +59,47 @@ export default class UserPage extends Component {
     }
   }
 
+  applyToJob(jobId) {
+    const userId = this.state.userId;
+    const params = new URLSearchParams({
+      id: jobId,
+      user_id: userId
+    }).toString();
+
+    axios.post(`http://localhost:8080/users/jobs/apply`, null, {
+      params: {
+        id: jobId,
+        user_id: userId
+      }
+    })
+    .then(response => {
+        console.log('Job applied successfully:', response.data);
+        alert('Job applied successfully');
+    })
+    .catch(error => {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            if (error.response.status === 409) {
+                console.error('User has already applied for this job.');
+                alert('You have already applied for this job.');
+            } else {
+                console.error('Error applying for job:', error.response.data);
+                alert('An error occurred while applying for the job.');
+            }
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received:', error.request);
+            alert('No response received from the server.');
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error', error.message);
+            alert('An error occurred while applying for the job.');
+        }
+    });
+}
+
+
   render() {
     if (!this.state.isloggedin) {
       return <Navigate to="/login" />;

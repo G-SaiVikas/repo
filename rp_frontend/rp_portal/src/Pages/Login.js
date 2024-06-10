@@ -32,8 +32,9 @@ export default class Login extends Component {
 
     axios.get(`http://localhost:8080/users/login?${params}`).then((res) => {
       if (res.status === 200) {
+        console.log(res.data);
         localStorage.setItem('jwtToken', res.data.accessToken);
-        localStorage.setItem('userId', res.data.email);
+        localStorage.setItem('userId', res.data.userId);
         this.setState({ isloggedin: true });
       }
     }).catch(() => {
