@@ -39,28 +39,28 @@ import com.strawhats.RecruitmentPortal.service.JobService;
 public class UserController {
 	
 	@Autowired
-	private UserService userService;
+	public UserService userService;
 	
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	public AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserRepository userRepository;
+	public UserRepository userRepository;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private JWTGenerator jwtGenerator;
+	public JWTGenerator jwtGenerator;
 	
 	@Autowired
-    private MailService mailService;
+	public MailService mailService;
 	
 	@Autowired
-	private JobService jobService;
+	public JobService jobService;
     
     @Autowired
-    private MailStructure mailStructure;
+	public MailStructure mailStructure;
 
 	
 	@PostMapping("/register")
