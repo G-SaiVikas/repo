@@ -112,9 +112,6 @@ export default class UserPage extends Component {
 
     return (
       <div className="container py-5">
-        <h1 className="text-center">Hi, {this.state.userId}</h1>
-        <button onClick={this.logout} className="btn btn-danger mt-3 mb-5">Logout</button>
-
         <div className="mb-4">
           <input
             type="text"
