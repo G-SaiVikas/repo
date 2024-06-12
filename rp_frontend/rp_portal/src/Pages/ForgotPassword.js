@@ -54,6 +54,7 @@ export default class ForgotPassword extends Component {
                   type="text"
                   id="fullName"
                   name="fullName"
+                  placeholder='Full Name'
                   value={this.state.fullName}
                   onChange={this.onChange}
                   className="form-control form-control-lg"
@@ -68,6 +69,7 @@ export default class ForgotPassword extends Component {
                   type="text"
                   id="phoneNumber"
                   name="phoneNumber"
+                  placeholder='Phone Number'
                   value={this.state.phoneNumber}
                   onChange={this.onChange}
                   className="form-control form-control-lg"
