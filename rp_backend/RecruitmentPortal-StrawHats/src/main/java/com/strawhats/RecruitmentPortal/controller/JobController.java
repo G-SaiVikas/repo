@@ -17,7 +17,7 @@ import com.strawhats.RecruitmentPortal.service.JobService;
 public class JobController {
 	
 	@Autowired
-    private JobService jobService;
+	public JobService jobService;
 	
 	@GetMapping("/getjobs")
 	public List<JobDTO> getAllJobs() {

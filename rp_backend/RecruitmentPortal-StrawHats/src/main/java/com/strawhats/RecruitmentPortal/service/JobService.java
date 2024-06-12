@@ -30,7 +30,7 @@ public class JobService {
                              .collect(Collectors.toList());
     }
     
-    private JobDTO convertToDTO(Job job) {
+    public JobDTO convertToDTO(Job job) {
         JobDTO dto = new JobDTO();
         dto.setId(job.getId());
         dto.setCompany(job.getCompany());
