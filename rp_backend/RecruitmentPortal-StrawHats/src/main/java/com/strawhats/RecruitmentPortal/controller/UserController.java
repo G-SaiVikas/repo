@@ -140,9 +140,9 @@ public class UserController {
     }
 	
 	@PostMapping("/jobs/save")
-    public ResponseEntity<Void> saveJob(@RequestParam Long id, @RequestBody User user) {
+    public ResponseEntity<Void> saveJob(@RequestParam Long id, @RequestParam Long user_id) {
     	
-      userService.saveJob(user.getId(), id);
+      userService.saveJob(user_id, id);
       return ResponseEntity.ok().build();
 	}
 	
