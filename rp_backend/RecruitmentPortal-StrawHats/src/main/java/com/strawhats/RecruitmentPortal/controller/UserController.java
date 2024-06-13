@@ -139,6 +139,13 @@ public class UserController {
         return ResponseEntity.ok("Job application successful.");
     }
 	
+	@PostMapping("/jobs/save")
+    public ResponseEntity<Void> saveJob(@RequestParam Long id, @RequestBody User user) {
+    	
+      userService.saveJob(user.getId(), id);
+      return ResponseEntity.ok().build();
+	}
+	
 	@GetMapping("/getappliedjobs")
     public List<JobDTO> getAppliedJobs(@RequestParam Long user_id) {
 		
