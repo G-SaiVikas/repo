@@ -2,6 +2,8 @@ package com.strawhats.RecruitmentPortal.model;
 
 import java.util.List;
 
+import com.strawhats.RecruitmentPortal.model.User;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,4 +45,10 @@ public class Job {
 	      joinColumns = @JoinColumn(name = "job_id"),
 	      inverseJoinColumns = @JoinColumn(name = "user_id"))
 	  private List<User> applicants;
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	  @JoinTable(name = "savedJob_applicants",
+	      joinColumns = @JoinColumn(name = "job_id"),
+	      inverseJoinColumns = @JoinColumn(name = "user_id"))
+	  private List<User> savedJobsApplicants;
 }
