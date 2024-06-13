@@ -57,4 +57,14 @@ public class UserService {
         userRepository.save(user);
         jobRepository.save(job);
     }
+    
+    public void saveJob(Long userId, Long jobId) {
+		User user = userRepository.findById(userId).get();
+        Job job = jobRepository.findById(jobId).get();
+        user.getSavedJobs().add(job);
+        job.getSavedJobsApplicants().add(user);
+        userRepository.save(user);
+        jobRepository.save(job);
+	}
+    
 }
