@@ -13,7 +13,7 @@ export default function About() {
           <div class="row h-100 align-items-center py-5">
             <div class="col-lg-6">
               <h1 class="display-4">Welcome to Recruitment Portal!</h1>
-              <p class="lead text-muted mb-0">At [Your Recruitment Portal Name], we are dedicated to bridging the gap between talented job seekers and dynamic employers. Our platform is designed with the mission to simplify the job search and recruitment process, ensuring that the right candidates find the right opportunities.</p>
+              <p class="lead text-muted mb-0">At StrawHats Recruitment Portal, we are dedicated to bridging the gap between talented job seekers and dynamic employers. Our platform is designed with the mission to simplify the job search and recruitment process, ensuring that the right candidates find the right opportunities.</p>
               </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block"></div>
