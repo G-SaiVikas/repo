@@ -139,25 +139,19 @@ public class UserController {
         return ResponseEntity.ok("Job application successful.");
     }
 	
-	@PostMapping("/jobs/save")
-    public ResponseEntity<Void> saveJob(@RequestParam Long id, @RequestParam Long user_id) {
-    	
-      userService.saveJob(user_id, id);
-      return ResponseEntity.ok().build();
-	}
+    @PostMapping("/jobs/save")
+    public ResponseEntity<String> saveJob(@RequestParam Long id, @RequestParam Long user_id) {
+        if (userService.hasUserSavedJob(user_id, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User has already saved this job.");
+        }
+        userService.saveJob(user_id, id);
+        return ResponseEntity.ok("Job saved successfully.");
+    }
+
 	
 	@GetMapping("/getappliedjobs")
     public List<JobDTO> getAppliedJobs(@RequestParam Long user_id) {
 		
-//    	jobService.getAppliedJobs(user).forEach(v->System.out.println(v.getApplicants()));
-    	
-//		List<Job> a = jobService.getAppliedJobs(user);
-//    	for(Job job : a) {
-////    		for(User x : job.getApplicants()) {
-////    			System.out.println(x.getId());
-////    		}
-//    		System.out.println(job.getId());
-//    	}
     	return jobService.getAppliedJobs(user_id);
 
 	}

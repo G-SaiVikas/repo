@@ -58,6 +58,12 @@ public class UserService {
         jobRepository.save(job);
     }
     
+    public boolean hasUserSavedJob(Long userId, Long jobId) {
+        User user = userRepository.findById(userId).get();
+        Job job = jobRepository.findById(jobId).get();
+        return user.getSavedJobs().contains(job);
+    }
+    
     public void saveJob(Long userId, Long jobId) {
 		User user = userRepository.findById(userId).get();
         Job job = jobRepository.findById(jobId).get();
@@ -66,5 +72,8 @@ public class UserService {
         userRepository.save(user);
         jobRepository.save(job);
 	}
+    
+    
+
     
 }
