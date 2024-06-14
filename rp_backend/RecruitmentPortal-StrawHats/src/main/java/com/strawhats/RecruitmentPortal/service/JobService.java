@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
-import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 
@@ -16,20 +15,26 @@ import com.strawhats.RecruitmentPortal.repo.UserRepository;
 public class JobService {
     @Autowired
     private JobRepository jobRepository;
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     public Job registerJob(Job job) {
         return jobRepository.save(job);
     }
-    
+
     public List<JobDTO> getAllJobs() {
         return jobRepository.findAll().stream()
                              .map(this::convertToDTO)
                              .collect(Collectors.toList());
     }
-    
+
+    public List<JobDTO> searchJob(String skill) {
+        return jobRepository.findBySkillsRequiredContaining(skill).stream()
+                             .map(this::convertToDTO)
+                             .collect(Collectors.toList());
+    }
+
     public JobDTO convertToDTO(Job job) {
         JobDTO dto = new JobDTO();
         dto.setId(job.getId());
@@ -41,17 +46,10 @@ public class JobService {
         dto.setSalary(job.getSalary());
         return dto;
     }
-    
-    
-    public List<Job> searchJob(String skill){
-    	return jobRepository.findBySkillsRequiredContaining(skill);
-    }
 
-	public List<JobDTO> getAppliedJobs(Long user_id) {
-		
-		return jobRepository.findByApplicants(userRepository.findById(user_id).get()).stream()
-							.map(this::convertToDTO)
-							.collect(Collectors.toList());
-	}
-    
+    public List<JobDTO> getAppliedJobs(Long user_id) {
+        return jobRepository.findByApplicants(userRepository.findById(user_id).get()).stream()
+                            .map(this::convertToDTO)
+                            .collect(Collectors.toList());
+    }
 }
