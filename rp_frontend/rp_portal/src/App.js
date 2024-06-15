@@ -8,6 +8,7 @@ import ResetPassword from './Pages/ResetPassword';
 import Login from './Pages/Login';
 import User from './Pages/User';
 import ViewAppliedJobs from './Pages/ViewAppliedJobs';
+import ViewSavedJobs from './Pages/ViewSavedJobs';
 
 const App = () => {
   const isLoggedIn = localStorage.getItem('jwtToken') !== null;
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<User />} />
           <Route path="/applied-jobs" element={<ViewAppliedJobs />} />
+          <Route path="/saved-jobs" element={<ViewSavedJobs />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
         </Routes>
