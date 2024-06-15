@@ -1,10 +1,13 @@
 package com.strawhats.RecruitmentPortal.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -33,8 +36,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.strawhats.RecruitmentPortal.api.config.TestSecurityConfig;
 import com.strawhats.RecruitmentPortal.controller.UserController;
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
+import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
 import com.strawhats.RecruitmentPortal.service.MailService;
@@ -72,9 +77,14 @@ class UserControllerTest {
     private UserRepository userRepository;
     
     @MockBean
+    private JobRepository jobRepository;
+    
+    @MockBean
     private MailStructure mailStructure;
 
     private User user;
+    
+    private Job job; 
     
     @InjectMocks
     private UserController userController;
@@ -82,11 +92,23 @@ class UserControllerTest {
     @BeforeEach
     void init() {
         this.user = User.builder()
+        		.id(1L)
             .fullName("Test test")
             .email("test@test.com")
             .password("test")
             .phoneNumber("123456789")
+            .savedJobs(new ArrayList<Job>())
             .build();
+        
+        this.job = Job.builder()
+    			.id(1L)
+				.company("Test Company")
+				.jobDescription("Test description")
+				.jobTitle("Test title")
+				.skillsRequired("Test1, test2, test3")
+				.location("test city")
+				.savedJobsApplicants(new ArrayList<>())
+				.salary("10000").build();
         
         userController.authenticationManager = authenticationManager;
         userController.userRepository = userRepository;
@@ -171,5 +193,17 @@ class UserControllerTest {
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         Assertions.assertThat(response.getBody()).isNull();
+    }
+    
+    @Test
+    public void testSaveJob() throws Exception{
+    	when(userService.hasUserSavedJob(1L, 1L)).thenReturn(false);
+        doNothing().when(userService).saveJob(1L, 1L);
+
+        mockMvc.perform(post("/users/jobs/save")
+                .param("id", "1")
+                .param("user_id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo("Job saved successfully."));
     }
 }

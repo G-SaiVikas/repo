@@ -9,13 +9,16 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.service.UserService;
 
 
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +31,9 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+    
+    @Mock
+    private JobRepository jobRepository;
 
     @Test
     public void testRegisterUserService() {
@@ -98,5 +104,38 @@ public class UserServiceTest {
         Assertions.assertThat(updatedUser).isNotNull();
         Assertions.assertThat(updatedUser.getPassword()).isEqualTo(newPassword);
 
+    }
+    
+    @Test
+    public void testSaveJob() {
+    	
+    	User user = User.builder()
+	            .id(1L)
+	            .fullName("Test test")
+	            .email("test@test.com")
+	            .password("test")
+	            .phoneNumber("123456789")
+	            .savedJobs(new ArrayList<>())
+	            .build();
+    	
+    	Job job = Job.builder()
+    			.id(1L)
+				.company("Test Company")
+				.jobDescription("Test description")
+				.jobTitle("Test title")
+				.skillsRequired("Test1, test2, test3")
+				.location("test city")
+				.savedJobsApplicants(new ArrayList<>())
+				.salary("10000").build();
+    	
+    	when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
+
+        userService.saveJob(1L, 1L);
+
+        Assertions.assertThat(user.getSavedJobs()).contains(job);
+        Assertions.assertThat(job.getSavedJobsApplicants()).contains(user);
+    	
+    	
     }
 }

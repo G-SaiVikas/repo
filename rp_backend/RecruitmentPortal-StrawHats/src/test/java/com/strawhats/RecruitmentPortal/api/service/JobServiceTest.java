@@ -80,11 +80,11 @@ public class JobServiceTest {
     public void testSearchJobsBySkill() {
         when(jobRepository.findBySkillsRequiredContaining("test2")).thenReturn(List.of(job1, job2));
         
-        List<Job> jobs = jobService.searchJob("test2");
+        List<JobDTO> jobs = jobService.searchJob("test2");
         
         Assertions.assertThat(jobs).isNotNull();
         Assertions.assertThat(jobs).hasSize(2);
-        Assertions.assertThat(jobs).contains(job1, job2);
+        Assertions.assertThat(jobs).contains(jobService.convertToDTO(job1), jobService.convertToDTO(job2));
     }
 	
 }
