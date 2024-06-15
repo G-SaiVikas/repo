@@ -24,6 +24,8 @@ public class JobController {
 		return jobService.getAllJobs();
 	}
 	
+	
+	
 	@GetMapping("/searchJob")
 	public List<Job> searchJob(@RequestParam String skill) {
 		return jobService.searchJob(skill);
