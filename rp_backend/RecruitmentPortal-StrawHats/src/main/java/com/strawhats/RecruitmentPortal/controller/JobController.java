@@ -9,26 +9,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
-import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.service.JobService;
 
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
-	
-	@Autowired
-	public JobService jobService;
-	
-	@GetMapping("/getjobs")
-	public List<JobDTO> getAllJobs() {
-		return jobService.getAllJobs();
-	}
-	
-	
-	
-	@GetMapping("/searchJob")
-	public List<Job> searchJob(@RequestParam String skill) {
-		return jobService.searchJob(skill);
-	}
-	
+
+    @Autowired
+    public JobService jobService;
+
+    @GetMapping("/getjobs")
+    public List<JobDTO> getAllJobs() {
+        return jobService.getAllJobs();
+    }
+
+    @GetMapping("/searchJob")
+    public List<JobDTO> searchJob(@RequestParam String skill) {
+        return jobService.searchJob(skill);
+    }
 }

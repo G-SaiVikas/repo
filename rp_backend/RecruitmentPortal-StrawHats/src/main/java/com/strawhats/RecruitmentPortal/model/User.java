@@ -1,6 +1,8 @@
 package com.strawhats.RecruitmentPortal.model;
 import java.util.List;
 
+import com.strawhats.RecruitmentPortal.model.Job;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,5 +32,8 @@ public class User {
     
     @ManyToMany(mappedBy = "applicants")
     private List<Job> appliedJobs;
+    
+    @ManyToMany(mappedBy = "savedJobsApplicants")
+    private List<Job> savedJobs;
     
 }
