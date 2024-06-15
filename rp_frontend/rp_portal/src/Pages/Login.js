@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import image from '../Picture/R.jpeg';
 import Footer from './Footer';
 
@@ -36,6 +36,7 @@ export default class Login extends Component {
         localStorage.setItem('jwtToken', res.data.accessToken);
         localStorage.setItem('userId', res.data.userId);
         this.setState({ isloggedin: true });
+        this.props.onLogin(); // Call the onLogin callback
       }
     }).catch(() => {
       this.setState({ showError: true });
@@ -54,7 +55,14 @@ export default class Login extends Component {
         <div className="container py-1 h-80 mt-3">
           <div className="row d-flex align-items-center justify-content-center h-100">
             <div className="col-md-8 col-lg-7 col-xl-6">
-              <img src={image} alt="Home" />
+              <img 
+                src={image} 
+                alt="Home" 
+                style={{
+                  height: '600px',
+                  width: '600px'
+                }}
+              />
             </div>
             <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 border border-1 shadow-sm mb-3 p-5">
               <p className="text-center" id='loginHeading'>Sign in to get Started</p>
@@ -64,6 +72,7 @@ export default class Login extends Component {
                     type="email"
                     id="email"
                     name="email"
+                    placeholder="Email Address"
                     value={this.state.email}
                     onChange={this.onChange}
                     className="form-control form-control-lg"
@@ -79,6 +88,7 @@ export default class Login extends Component {
                     type="password"
                     id="password"
                     name="password"
+                    placeholder="Password"
                     onChange={this.onChange}
                     value={this.state.password}
                     className="form-control form-control-lg"

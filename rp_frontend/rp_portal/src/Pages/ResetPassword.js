@@ -69,6 +69,7 @@ export default class ResetPassword extends Component {
                   type="password"
                   id="newPassword"
                   name="newPassword"
+                  placeholder='New Password'
                   value={this.state.newPassword}
                   onChange={this.onChange}
                   className="form-control form-control-lg"
@@ -83,6 +84,7 @@ export default class ResetPassword extends Component {
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
+                  placeholder='Confirm Password'
                   value={this.state.confirmPassword}
                   onChange={this.onChange}
                   className="form-control form-control-lg"
