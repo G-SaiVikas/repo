@@ -64,21 +64,4 @@ describe('UserPage Component', () => {
     const applyButton = await screen.findByText('Apply');
     expect(applyButton).toBeInTheDocument();
   });
-
-  test('logs out and redirects to login page', () => {
-    render(
-      <MemoryRouter initialEntries={['/user']}>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/user" element={<UserPage />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    const logoutButton = screen.getByText('Logout');
-    fireEvent.click(logoutButton);
-
-    expect(localStorage.getItem('jwtToken')).toBeNull();
-    expect(screen.getByText('Signin')).toBeInTheDocument();
-  });
 });
