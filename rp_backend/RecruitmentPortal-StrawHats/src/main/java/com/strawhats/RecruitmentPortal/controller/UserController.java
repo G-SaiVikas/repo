@@ -155,5 +155,9 @@ public class UserController {
     	return jobService.getAppliedJobs(user_id);
 
 	}
+	@GetMapping("/getsavedjobs")
+	public List<JobDTO> getSavedJobs(@RequestParam Long userId){
+		return jobService.getSavedJobs(userId);
+	}
 	 
 }
