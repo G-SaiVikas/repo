@@ -30,6 +30,7 @@ export default class UserPage extends Component {
     axios.get('http://localhost:8080/jobs/getjobs')
       .then(response => {
         this.setState({ jobs: response.data, filteredJobs: response.data });
+        console.log({ filteredJobs: response.data }); 
       })
       .catch(error => {
         console.error("There was an error fetching the jobs!", error);

@@ -72,6 +72,7 @@ export default class Login extends Component {
                     type="email"
                     id="email"
                     name="email"
+                    placeholder="Email Address"
                     value={this.state.email}
                     onChange={this.onChange}
                     className="form-control form-control-lg"
@@ -87,6 +88,7 @@ export default class Login extends Component {
                     type="password"
                     id="password"
                     name="password"
+                    placeholder="Password"
                     onChange={this.onChange}
                     value={this.state.password}
                     className="form-control form-control-lg"
