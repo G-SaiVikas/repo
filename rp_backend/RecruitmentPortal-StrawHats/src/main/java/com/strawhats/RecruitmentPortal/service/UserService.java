@@ -1,5 +1,6 @@
 package com.strawhats.RecruitmentPortal.service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,22 @@ public class UserService {
         jobRepository.save(job);
 	}
     
+    public User updateUserProfile(Long id, String fullName, String phoneNumber, String email, byte[] profilePic, byte[] resume, Date dateOfBirth) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        if (retrievedUser.isPresent()) {
+            User user = retrievedUser.get();
+            user.setFullName(fullName);
+            user.setPhoneNumber(phoneNumber);
+            user.setEmail(email);
+            user.setProfilePic(profilePic);
+            user.setResume(resume);
+            user.setDateOfBirth(dateOfBirth);
+            userRepository.save(user);
+            return user;
+        } else {
+            return null;
+        }
+    }
     
 
     

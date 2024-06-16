@@ -1,5 +1,6 @@
 package com.strawhats.RecruitmentPortal.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,9 +152,12 @@ public class UserController {
     	return jobService.getAppliedJobs(user_id);
 
 	}
+	
 	@GetMapping("/getsavedjobs")
 	public List<JobDTO> getSavedJobs(@RequestParam Long userId){
 		return jobService.getSavedJobs(userId);
 	}
+	
+	
 	 
 }
