@@ -4,10 +4,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -36,12 +38,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.strawhats.RecruitmentPortal.api.config.TestSecurityConfig;
 import com.strawhats.RecruitmentPortal.controller.UserController;
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
+import com.strawhats.RecruitmentPortal.service.JobService;
 import com.strawhats.RecruitmentPortal.service.MailService;
 import com.strawhats.RecruitmentPortal.service.UserService;
 import com.strawhats.RecruitmentPortal.security.JWTGenerator;
@@ -84,7 +88,10 @@ class UserControllerTest {
 
     private User user;
     
-    private Job job; 
+    private Job job;
+    
+    @MockBean
+    private JobService jobService;
     
     @InjectMocks
     private UserController userController;
@@ -205,5 +212,17 @@ class UserControllerTest {
                 .param("user_id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo("Job saved successfully."));
+    }
+    
+    @Test
+    public void testGetSavedJobs() throws Exception {
+        List<JobDTO> savedJobs = new ArrayList<>();
+        savedJobs.add(jobService.convertToDTO(job));
+        when(jobService.getSavedJobs(1L)).thenReturn(savedJobs);
+
+        mockMvc.perform(get("/users/getsavedjobs")
+                .param("userId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isNotEmpty());
     }
 }
