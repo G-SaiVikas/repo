@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.dto.UserDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
@@ -91,6 +93,26 @@ public class UserService {
         }
     }
     
-
+    
+    public UserDTO viewUserProfile(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        if (retrievedUser.isPresent()) {
+            return convertToDTO(retrievedUser.get());
+        } else {
+            return null;
+        }
+    }
+    
+    public UserDTO convertToDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFullName(user.getFullName());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setResume(user.getResume());
+        dto.setProfilePic(user.getProfilePic());
+        dto.setDateOfBirth(user.getDateOfBirth());
+        return dto;
+    }
     
 }

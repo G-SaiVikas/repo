@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.dto.UserDTO;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
@@ -159,6 +160,20 @@ public class UserController {
 	public List<JobDTO> getSavedJobs(@RequestParam Long userId){
 		return jobService.getSavedJobs(userId);
 	}
+	
+	@GetMapping("/viewProfile")
+    public ResponseEntity<UserDTO> viewProfile(@RequestParam Long id) {
+		try {
+		UserDTO updatedUser = userService.viewUserProfile(id);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+    }
 	
 	@PutMapping("/updateProfile")
 	public ResponseEntity<User> updateProfile(@RequestParam Long id, 
