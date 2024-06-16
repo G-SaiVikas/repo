@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserSimpleDTO {
 	
     private Long id;
     
@@ -31,9 +31,9 @@ public class UserDTO {
     
     private String phoneNumber;
     
-    private byte[] profilePic;
-
-    private byte[] resume; 
+//    private byte[] profilePic;
+//
+//    private byte[] resume; 
     
     private Date dateOfBirth;
     

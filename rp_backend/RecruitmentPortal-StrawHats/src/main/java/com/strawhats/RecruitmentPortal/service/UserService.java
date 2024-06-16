@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
-import com.strawhats.RecruitmentPortal.dto.UserDTO;
+import com.strawhats.RecruitmentPortal.dto.UserSimpleDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
@@ -93,26 +93,45 @@ public class UserService {
         }
     }
     
-    
-    public UserDTO viewUserProfile(Long id) {
+    public UserSimpleDTO viewUserProfile(Long id) {
         Optional<User> retrievedUser = userRepository.findById(id);
         if (retrievedUser.isPresent()) {
-            return convertToDTO(retrievedUser.get());
+            return convertToSimpleDTO(retrievedUser.get());
         } else {
             return null;
         }
     }
-    
-    public UserDTO convertToDTO(User user) {
-        UserDTO dto = new UserDTO();
+
+    public byte[] getUserProfilePic(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+
+        System.out.println("Hi");
+        if (retrievedUser.isPresent()) {
+            return retrievedUser.get().getProfilePic();
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] getUserResume(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        System.out.println("Hi");
+        if (retrievedUser.isPresent()) {
+            return retrievedUser.get().getResume();
+        } else {
+            return null;
+        }
+    }
+
+    public UserSimpleDTO convertToSimpleDTO(User user) {
+        UserSimpleDTO dto = new UserSimpleDTO();
         dto.setId(user.getId());
         dto.setEmail(user.getEmail());
         dto.setFullName(user.getFullName());
         dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setResume(user.getResume());
-        dto.setProfilePic(user.getProfilePic());
         dto.setDateOfBirth(user.getDateOfBirth());
         return dto;
     }
+
     
 }

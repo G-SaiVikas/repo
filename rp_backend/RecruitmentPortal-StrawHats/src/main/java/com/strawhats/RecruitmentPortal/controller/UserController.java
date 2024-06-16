@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
-import com.strawhats.RecruitmentPortal.dto.UserDTO;
+import com.strawhats.RecruitmentPortal.dto.UserSimpleDTO;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
@@ -162,18 +162,47 @@ public class UserController {
 	}
 	
 	@GetMapping("/viewProfile")
-    public ResponseEntity<UserDTO> viewProfile(@RequestParam Long id) {
-		try {
-		UserDTO updatedUser = userService.viewUserProfile(id);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.status(404).body(null);
-        }
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    }
-    }
+	public ResponseEntity<UserSimpleDTO> viewProfile(@RequestParam Long id) {
+	    try {
+	        UserSimpleDTO userDTO = userService.viewUserProfile(id);
+	        if (userDTO != null) {
+	            return ResponseEntity.ok(userDTO);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
+	@GetMapping("/viewProfilePic")
+	public ResponseEntity<byte[]> viewProfilePic(@RequestParam Long id) {
+	    try {
+	        byte[] profilePic = userService.getUserProfilePic(id);
+	        if (profilePic != null) {
+	            return ResponseEntity.ok(profilePic);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
+	@GetMapping("/viewResume")
+	public ResponseEntity<byte[]> viewResume(@RequestParam Long id) {
+	    try {
+	        byte[] resume = userService.getUserResume(id);
+	        if (resume != null) {
+	            return ResponseEntity.ok(resume);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
 	
 	@PutMapping("/updateProfile")
 	public ResponseEntity<User> updateProfile(@RequestParam Long id, 
