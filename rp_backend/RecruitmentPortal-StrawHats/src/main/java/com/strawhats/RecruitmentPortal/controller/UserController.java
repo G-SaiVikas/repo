@@ -158,6 +158,20 @@ public class UserController {
 		return jobService.getSavedJobs(userId);
 	}
 	
-	
+	@PutMapping("/updateProfile")
+    public ResponseEntity<User> updateProfile(@RequestParam Long id, 
+                                              @RequestParam String fullName, 
+                                              @RequestParam String phoneNumber, 
+                                              @RequestParam String email, 
+                                              @RequestParam byte[] profilePic, 
+                                              @RequestParam byte[] resume, 
+                                              @RequestParam Date dateOfBirth) {
+        User updatedUser = userService.updateUserProfile(id, fullName, phoneNumber, email, profilePic, resume, dateOfBirth);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
 	 
 }
