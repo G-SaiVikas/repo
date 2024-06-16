@@ -34,7 +34,11 @@ public class JobService {
                              .map(this::convertToDTO)
                              .collect(Collectors.toList());
     }
-
+    public List<JobDTO> getSavedJobs(Long userId){
+    	return jobRepository.findByApplicants(userRepository.findById(userId).get()).stream()
+				.map(this::convertToDTO)
+				.collect(Collectors.toList());
+    }
     public JobDTO convertToDTO(Job job) {
         JobDTO dto = new JobDTO();
         dto.setId(job.getId());

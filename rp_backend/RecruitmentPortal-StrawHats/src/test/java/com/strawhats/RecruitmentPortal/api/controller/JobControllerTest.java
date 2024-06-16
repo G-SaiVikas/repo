@@ -126,8 +126,29 @@ public class JobControllerTest {
     
     @Test
     void testSearchJobBySkill() throws Exception {
+    	JobDTO j1 = JobDTO.builder()
+                .id(job1.getId())
+                .company(job1.getCompany())
+                .jobTitle(job1.getJobTitle())
+                .jobDescription(job1.getJobDescription())
+                .skillsRequired(job1.getSkillsRequired())
+                .location(job1.getLocation())
+                .salary(job1.getSalary())
+                .build();
+
+        JobDTO j2 = JobDTO.builder()
+                .id(job2.getId())
+                .company(job2.getCompany())
+                .jobTitle(job2.getJobTitle())
+                .jobDescription(job2.getJobDescription())
+                .skillsRequired(job2.getSkillsRequired())
+                .location(job2.getLocation())
+                .salary(job2.getSalary())
+                .build();
+        
+        List<JobDTO> jobDTOList = List.of(j1, j2);
     	
-    	when(jobService.searchJob("Skill1")).thenReturn(jobList);
+    	when(jobService.searchJob("Skill1")).thenReturn(jobDTOList);
     	
     	mockMvc.perform(get("/jobs/searchJob")
     			.param("skill", "Skill1")

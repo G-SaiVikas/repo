@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
 
 @DataJpaTest
@@ -18,6 +19,9 @@ public class UserRepositoryTest {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private JobRepository jobRepository;
 	
 	@Test
 	public void UserRepository_SaveAll_ReturnSavedUser() {
@@ -65,6 +69,5 @@ public class UserRepositoryTest {
 		 Assertions.assertThat(users.size()).isEqualTo(2);
 
 	}
-	
 
 }

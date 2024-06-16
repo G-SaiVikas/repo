@@ -9,13 +9,19 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
+import com.strawhats.RecruitmentPortal.service.JobService;
 import com.strawhats.RecruitmentPortal.service.UserService;
 
 
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +34,12 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+    
+    @Mock
+    private JobRepository jobRepository;
+    
+    @InjectMocks
+    private JobService jobService;
 
     @Test
     public void testRegisterUserService() {
@@ -99,4 +111,82 @@ public class UserServiceTest {
         Assertions.assertThat(updatedUser.getPassword()).isEqualTo(newPassword);
 
     }
+    
+    @Test
+    public void testSaveJob() {
+    	
+    	User user = User.builder()
+	            .id(1L)
+	            .fullName("Test test")
+	            .email("test@test.com")
+	            .password("test")
+	            .phoneNumber("123456789")
+	            .savedJobs(new ArrayList<>())
+	            .build();
+    	
+    	Job job = Job.builder()
+    			.id(1L)
+				.company("Test Company")
+				.jobDescription("Test description")
+				.jobTitle("Test title")
+				.skillsRequired("Test1, test2, test3")
+				.location("test city")
+				.savedJobsApplicants(new ArrayList<>())
+				.salary("10000").build();
+    	
+    	when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
+
+        userService.saveJob(1L, 1L);
+
+        Assertions.assertThat(user.getSavedJobs()).contains(job);
+        Assertions.assertThat(job.getSavedJobsApplicants()).contains(user);
+    	
+    	
+    }
+    
+    @Test
+    public void testGetSavedJobs() {
+        User user = User.builder()
+                .id(1L)
+                .fullName("Test User")
+                .email("test@test.com")
+                .password("password")
+                .phoneNumber("123456789")
+                .savedJobs(new ArrayList<>())
+                .build();
+
+        Job job1 = Job.builder()
+                .id(1L)
+                .company("Test Company 1")
+                .jobTitle("Title 1")
+                .jobDescription("Description 1")
+                .skillsRequired("Skill1, Skill2")
+                .location("Location 1")
+                .salary("1000")
+                .build();
+
+        Job job2 = Job.builder()
+                .id(2L)
+                .company("Test Company 2")
+                .jobTitle("Title 2")
+                .jobDescription("Description 2")
+                .skillsRequired("Skill3, Skill4")
+                .location("Location 2")
+                .salary("2000")
+                .build();
+
+        List<Job> savedJobs = new ArrayList<>();
+        savedJobs.add(job1);
+        savedJobs.add(job2);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(jobRepository.findByApplicants(user)).thenReturn(savedJobs);
+
+        List<JobDTO> savedJobDTOs = jobService.getSavedJobs(1L);
+
+        Assertions.assertThat(savedJobDTOs).hasSize(2);
+        Assertions.assertThat(savedJobDTOs.get(0).getId()).isEqualTo(job1.getId());
+        Assertions.assertThat(savedJobDTOs.get(1).getId()).isEqualTo(job2.getId());
+}
 }
