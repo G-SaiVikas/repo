@@ -205,7 +205,7 @@ public class UserController {
 
 	
 	@PutMapping("/updateProfile")
-	public ResponseEntity<User> updateProfile(@RequestParam Long id, 
+	public ResponseEntity<UserSimpleDTO> updateProfile(@RequestParam Long id, 
 	                                          @RequestParam String fullName, 
 	                                          @RequestParam String phoneNumber, 
 	                                          @RequestParam String email, 
@@ -217,8 +217,9 @@ public class UserController {
 	        byte[] resumeBytes = resume.getBytes();
 	        
 	        User updatedUser = userService.updateUserProfile(id, fullName, phoneNumber, email, profilePicBytes, resumeBytes, dateOfBirth);
+	        UserSimpleDTO user = userService.convertToSimpleDTO(updatedUser);
 	        if (updatedUser != null) {
-	            return ResponseEntity.ok(updatedUser);
+	            return ResponseEntity.ok(user);
 	        } else {
 	            return ResponseEntity.status(404).body(null);
 	        }
