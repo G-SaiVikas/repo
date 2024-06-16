@@ -1,5 +1,6 @@
 package com.strawhats.RecruitmentPortal.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
@@ -159,19 +161,26 @@ public class UserController {
 	}
 	
 	@PutMapping("/updateProfile")
-    public ResponseEntity<User> updateProfile(@RequestParam Long id, 
-                                              @RequestParam String fullName, 
-                                              @RequestParam String phoneNumber, 
-                                              @RequestParam String email, 
-                                              @RequestParam byte[] profilePic, 
-                                              @RequestParam byte[] resume, 
-                                              @RequestParam Date dateOfBirth) {
-        User updatedUser = userService.updateUserProfile(id, fullName, phoneNumber, email, profilePic, resume, dateOfBirth);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.status(404).body(null);
-        }
-    }
+	public ResponseEntity<User> updateProfile(@RequestParam Long id, 
+	                                          @RequestParam String fullName, 
+	                                          @RequestParam String phoneNumber, 
+	                                          @RequestParam String email, 
+	                                          @RequestParam("profilePic") MultipartFile profilePic, 
+	                                          @RequestParam("resume") MultipartFile resume, 
+	                                          @RequestParam Date dateOfBirth) {
+	    try {
+	        byte[] profilePicBytes = profilePic.getBytes();
+	        byte[] resumeBytes = resume.getBytes();
+	        
+	        User updatedUser = userService.updateUserProfile(id, fullName, phoneNumber, email, profilePicBytes, resumeBytes, dateOfBirth);
+	        if (updatedUser != null) {
+	            return ResponseEntity.ok(updatedUser);
+	        } else {
+	            return ResponseEntity.status(404).body(null);
+	        }
+	    } catch (IOException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
 	 
 }

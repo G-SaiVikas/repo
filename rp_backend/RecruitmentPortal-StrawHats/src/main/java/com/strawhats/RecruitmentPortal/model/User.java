@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.strawhats.RecruitmentPortal.model.Job;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,9 +38,11 @@ public class User {
     private String phoneNumber;
     
     @Lob
+    @Column(name = "profile_pic", columnDefinition = "LONGBLOB")
     private byte[] profilePic;
-    
+
     @Lob
+    @Column(name = "resume", columnDefinition = "LONGBLOB")
     private byte[] resume; 
     
     private Date dateOfBirth;
