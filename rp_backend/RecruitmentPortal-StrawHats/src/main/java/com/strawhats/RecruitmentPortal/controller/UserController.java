@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -194,7 +196,10 @@ public class UserController {
 	    try {
 	        byte[] resume = userService.getUserResume(id);
 	        if (resume != null) {
-	            return ResponseEntity.ok(resume);
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_PDF);
+	            headers.setContentDispositionFormData("attachment", "resume.pdf");
+	            return new ResponseEntity<>(resume, headers, HttpStatus.OK);
 	        } else {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	        }
