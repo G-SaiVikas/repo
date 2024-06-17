@@ -1,10 +1,14 @@
 package com.strawhats.RecruitmentPortal.controller;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
 import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.dto.UserSimpleDTO;
 import com.strawhats.RecruitmentPortal.model.MailStructure;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.UserRepository;
@@ -151,9 +157,80 @@ public class UserController {
     	return jobService.getAppliedJobs(user_id);
 
 	}
+	
 	@GetMapping("/getsavedjobs")
 	public List<JobDTO> getSavedJobs(@RequestParam Long userId){
 		return jobService.getSavedJobs(userId);
+	}
+	
+	@GetMapping("/viewProfile")
+	public ResponseEntity<UserSimpleDTO> viewProfile(@RequestParam Long id) {
+	    try {
+	        UserSimpleDTO userDTO = userService.viewUserProfile(id);
+	        if (userDTO != null) {
+	            return ResponseEntity.ok(userDTO);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
+	@GetMapping("/viewProfilePic")
+	public ResponseEntity<byte[]> viewProfilePic(@RequestParam Long id) {
+	    try {
+	        byte[] profilePic = userService.getUserProfilePic(id);
+	        if (profilePic != null) {
+	            return ResponseEntity.ok(profilePic);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
+	@GetMapping("/viewResume")
+	public ResponseEntity<byte[]> viewResume(@RequestParam Long id) {
+	    try {
+	        byte[] resume = userService.getUserResume(id);
+	        if (resume != null) {
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_PDF);
+	            headers.setContentDispositionFormData("attachment", "resume.pdf");
+	            return new ResponseEntity<>(resume, headers, HttpStatus.OK);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+
+	
+	@PutMapping("/updateProfile")
+	public ResponseEntity<UserSimpleDTO> updateProfile(@RequestParam Long id, 
+	                                          @RequestParam String fullName, 
+	                                          @RequestParam String phoneNumber, 
+	                                          @RequestParam String email, 
+	                                          @RequestParam("profilePic") MultipartFile profilePic, 
+	                                          @RequestParam("resume") MultipartFile resume, 
+	                                          @RequestParam Date dateOfBirth) {
+	    try {
+	        byte[] profilePicBytes = profilePic.getBytes();
+	        byte[] resumeBytes = resume.getBytes();
+	        
+	        User updatedUser = userService.updateUserProfile(id, fullName, phoneNumber, email, profilePicBytes, resumeBytes, dateOfBirth);
+	        UserSimpleDTO user = userService.convertToSimpleDTO(updatedUser);
+	        if (updatedUser != null) {
+	            return ResponseEntity.ok(user);
+	        } else {
+	            return ResponseEntity.status(404).body(null);
+	        }
+	    } catch (IOException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
 	}
 	 
 }

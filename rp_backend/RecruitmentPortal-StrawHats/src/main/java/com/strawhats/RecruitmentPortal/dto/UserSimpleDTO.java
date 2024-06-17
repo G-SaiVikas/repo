@@ -1,4 +1,4 @@
-package com.strawhats.RecruitmentPortal.model;
+package com.strawhats.RecruitmentPortal.dto;
 import java.sql.Date;
 import java.util.List;
 
@@ -18,39 +18,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Builder
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "`user`")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserSimpleDTO {
+	
     private Long id;
     
     private String fullName;
     
     private String email;
     
-    private String password;
-    
     private String phoneNumber;
     
-    @Lob
-    @Column(name = "profile_pic", columnDefinition = "LONGBLOB")
-    private byte[] profilePic;
-
-    @Lob
-    @Column(name = "resume", columnDefinition = "LONGBLOB")
-    private byte[] resume; 
+//    private byte[] profilePic;
+//
+//    private byte[] resume; 
     
     private Date dateOfBirth;
-    
-    @ManyToMany(mappedBy = "applicants")
-    private List<Job> appliedJobs;
-    
-    @ManyToMany(mappedBy = "savedJobsApplicants")
-    private List<Job> savedJobs;
     
 }

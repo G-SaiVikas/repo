@@ -11,6 +11,7 @@ import User from './Pages/User';
 import ViewAppliedJobs from './Pages/ViewAppliedJobs';
 import logo from './Picture/image.png';
 import ViewSavedJobs from './Pages/ViewSavedJobs';
+import UserProfile from './Pages/UserProfile';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('jwtToken') !== null);
@@ -68,6 +69,7 @@ const App = () => {
           <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Pass the onLogin prop */}
           <Route path="/user" element={<User />} />
           <Route path="/applied-jobs" element={<ViewAppliedJobs />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/saved-jobs" element={<ViewSavedJobs />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />

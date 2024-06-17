@@ -1,10 +1,13 @@
 package com.strawhats.RecruitmentPortal.service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.dto.UserSimpleDTO;
 import com.strawhats.RecruitmentPortal.model.Job;
 import com.strawhats.RecruitmentPortal.model.User;
 import com.strawhats.RecruitmentPortal.repo.JobRepository;
@@ -73,7 +76,62 @@ public class UserService {
         jobRepository.save(job);
 	}
     
+    public User updateUserProfile(Long id, String fullName, String phoneNumber, String email, byte[] profilePic, byte[] resume, Date dateOfBirth) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        if (retrievedUser.isPresent()) {
+            User user = retrievedUser.get();
+            user.setFullName(fullName);
+            user.setPhoneNumber(phoneNumber);
+            user.setEmail(email);
+            user.setProfilePic(profilePic);
+            user.setResume(resume);
+            user.setDateOfBirth(dateOfBirth);
+            userRepository.save(user);
+            return user;
+        } else {
+            return null;
+        }
+    }
     
+    public UserSimpleDTO viewUserProfile(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        if (retrievedUser.isPresent()) {
+            return convertToSimpleDTO(retrievedUser.get());
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] getUserProfilePic(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+
+        System.out.println("Hi");
+        if (retrievedUser.isPresent()) {
+            return retrievedUser.get().getProfilePic();
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] getUserResume(Long id) {
+        Optional<User> retrievedUser = userRepository.findById(id);
+        System.out.println("Hi");
+        if (retrievedUser.isPresent()) {
+            return retrievedUser.get().getResume();
+        } else {
+            return null;
+        }
+    }
+
+    public UserSimpleDTO convertToSimpleDTO(User user) {
+        UserSimpleDTO dto = new UserSimpleDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFullName(user.getFullName());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setDateOfBirth(user.getDateOfBirth());
+        return dto;
+    }
 
     
 }
