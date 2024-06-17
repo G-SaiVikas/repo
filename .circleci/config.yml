@@ -16,27 +16,6 @@ jobs:
       - run:
           name: Run tests
           command: npx jest --detectOpenHandles
-  # build-node:
-  #   # Build node project
-  #   executor: node/default
-  #   working_directory: ~/project/rp_frontend/rp_portal
-  #   steps:
-  #     - checkout:
-  #         path: ~/project
-  #     - node/install-packages:
-  #         pkg-manager: npm
-  #     - run:
-  #         command: npm run build
-  #     - run:
-      #     name: Create the ~/artifacts directory if it doesn't exist
-      #     command: mkdir -p ~/artifacts
-      # # Copy output to artifacts dir
-      # - run:
-      #     name: Copy artifacts
-      #     command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      # - store_artifacts:
-      #     path: ~/artifacts
-      #     destination: node-build
   test-java:
     docker:
       - image: cimg/openjdk:17.0
@@ -59,26 +38,11 @@ jobs:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
             - ~/.m2/repository
-  # deploy:
-  #   # This is an example deploy job, not actually used by the workflow
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     # Replace this with steps to deploy to users
-  #     - run:
-  #         name: deploy
-  #         command: '#e.g. ./deploy.sh'
 workflows:
   build-and-test:
     jobs:
       - test-node
       - test-java
-      # - build-node:
-      #     requires:
-      #       - test-node
-      #       - test-java
           filters:
             branches:
               only: main
-      
-
