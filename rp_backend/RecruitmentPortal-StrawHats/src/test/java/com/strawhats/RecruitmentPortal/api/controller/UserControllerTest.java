@@ -1,228 +1,228 @@
-// package com.strawhats.RecruitmentPortal.api.controller;
+package com.strawhats.RecruitmentPortal.api.controller;
 
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
-// import static org.mockito.Mockito.when;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-// import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// import java.util.ArrayList;
-// import java.util.List;
-// import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-// import org.assertj.core.api.Assertions;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.Mockito;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-// import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-// import org.springframework.boot.test.mock.mockito.MockBean;
-// import org.springframework.context.annotation.Import;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.security.authentication.AuthenticationManager;
-// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.security.crypto.password.PasswordEncoder;
-// import org.springframework.test.context.ActiveProfiles;
-// import org.springframework.test.web.servlet.MockMvc;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import com.strawhats.RecruitmentPortal.api.config.TestSecurityConfig;
-// import com.strawhats.RecruitmentPortal.controller.UserController;
-// import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
-// import com.strawhats.RecruitmentPortal.dto.JobDTO;
-// import com.strawhats.RecruitmentPortal.model.Job;
-// import com.strawhats.RecruitmentPortal.model.MailStructure;
-// import com.strawhats.RecruitmentPortal.model.User;
-// import com.strawhats.RecruitmentPortal.repo.JobRepository;
-// import com.strawhats.RecruitmentPortal.repo.UserRepository;
-// import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
-// import com.strawhats.RecruitmentPortal.service.JobService;
-// import com.strawhats.RecruitmentPortal.service.MailService;
-// import com.strawhats.RecruitmentPortal.service.UserService;
-// import com.strawhats.RecruitmentPortal.security.JWTGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.strawhats.RecruitmentPortal.api.config.TestSecurityConfig;
+import com.strawhats.RecruitmentPortal.controller.UserController;
+import com.strawhats.RecruitmentPortal.dto.AuthResponseDTO;
+import com.strawhats.RecruitmentPortal.dto.JobDTO;
+import com.strawhats.RecruitmentPortal.model.Job;
+import com.strawhats.RecruitmentPortal.model.MailStructure;
+import com.strawhats.RecruitmentPortal.model.User;
+import com.strawhats.RecruitmentPortal.repo.JobRepository;
+import com.strawhats.RecruitmentPortal.repo.UserRepository;
+import com.strawhats.RecruitmentPortal.service.EmailAlreadyExistsException;
+import com.strawhats.RecruitmentPortal.service.JobService;
+import com.strawhats.RecruitmentPortal.service.MailService;
+import com.strawhats.RecruitmentPortal.service.UserService;
+import com.strawhats.RecruitmentPortal.security.JWTGenerator;
 
-// @WebMvcTest(controllers = UserController.class)
-// @AutoConfigureMockMvc(addFilters = false)
-// @ActiveProfiles("test")
-// @Import(TestSecurityConfig.class)
-// class UserControllerTest {
+@WebMvcTest(controllers = UserController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+@Import(TestSecurityConfig.class)
+class UserControllerTest {
 
-//     @Autowired
-//     private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-//     @MockBean
-//     private UserService userService;
+    @MockBean
+    private UserService userService;
     
-//     @Mock
-//     private AuthenticationManager authenticationManager;
+    @Mock
+    private AuthenticationManager authenticationManager;
 
-//     @MockBean
-//     private JWTGenerator jwtGenerator;
+    @MockBean
+    private JWTGenerator jwtGenerator;
     
-//     @Mock
-//     private PasswordEncoder passwordEncoder;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-//     @Autowired
-//     private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
     
-//     @MockBean
-//     private MailService mailService;
+    @MockBean
+    private MailService mailService;
     
-//     @MockBean
-//     private UserRepository userRepository;
+    @MockBean
+    private UserRepository userRepository;
     
-//     @MockBean
-//     private JobRepository jobRepository;
+    @MockBean
+    private JobRepository jobRepository;
     
-//     @MockBean
-//     private MailStructure mailStructure;
+    @MockBean
+    private MailStructure mailStructure;
 
-//     private User user;
+    private User user;
     
-//     private Job job;
+    private Job job;
     
-//     @MockBean
-//     private JobService jobService;
+    @MockBean
+    private JobService jobService;
     
-//     @InjectMocks
-//     private UserController userController;
+    @InjectMocks
+    private UserController userController;
 
-//     @BeforeEach
-//     void init() {
-//         this.user = User.builder()
-//         		.id(1L)
-//             .fullName("Test test")
-//             .email("test@test.com")
-//             .password("test")
-//             .phoneNumber("123456789")
-//             .savedJobs(new ArrayList<Job>())
-//             .build();
+    @BeforeEach
+    void init() {
+        this.user = User.builder()
+        		.id(1L)
+            .fullName("Test test")
+            .email("test@test.com")
+            .password("test")
+            .phoneNumber("123456789")
+            .savedJobs(new ArrayList<Job>())
+            .build();
         
-//         this.job = Job.builder()
-//     			.id(1L)
-// 				.company("Test Company")
-// 				.jobDescription("Test description")
-// 				.jobTitle("Test title")
-// 				.skillsRequired("Test1, test2, test3")
-// 				.location("test city")
-// 				.savedJobsApplicants(new ArrayList<>())
-// 				.salary("10000").build();
+        this.job = Job.builder()
+    			.id(1L)
+				.company("Test Company")
+				.jobDescription("Test description")
+				.jobTitle("Test title")
+				.skillsRequired("Test1, test2, test3")
+				.location("test city")
+				.savedJobsApplicants(new ArrayList<>())
+				.salary("10000").build();
         
-//         userController.authenticationManager = authenticationManager;
-//         userController.userRepository = userRepository;
-//         userController.passwordEncoder = passwordEncoder;
-//         userController.jwtGenerator = jwtGenerator;
-//         userController.mailService = mailService;
-//         userController.mailStructure = mailStructure;
-//         userController.userService = userService;
-//     }
+        userController.authenticationManager = authenticationManager;
+        userController.userRepository = userRepository;
+        userController.passwordEncoder = passwordEncoder;
+        userController.jwtGenerator = jwtGenerator;
+        userController.mailService = mailService;
+        userController.mailStructure = mailStructure;
+        userController.userService = userService;
+    }
 
-//     @Test
-//     void testRegisterUser() throws Exception {
-//         when(userService.registerUser(any(User.class))).thenReturn(user);
+    @Test
+    void testRegisterUser() throws Exception {
+        when(userService.registerUser(any(User.class))).thenReturn(user);
 
-//         mockMvc.perform(post("/users/register")
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .content(objectMapper.writeValueAsString(user)))
-//             .andExpect(status().isOk());
-//     }
+        mockMvc.perform(post("/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)))
+            .andExpect(status().isOk());
+    }
     
-//     @Test
-//     public void testRegisterUser_EmailAlreadyExistsException() {
-//         when(userRepository.save(any(User.class))).thenThrow(new EmailAlreadyExistsException("Email already exists"));
+    @Test
+    public void testRegisterUser_EmailAlreadyExistsException() {
+        when(userRepository.save(any(User.class))).thenThrow(new EmailAlreadyExistsException("Email already exists"));
 
-//         ResponseEntity<?> response = userController.registerUser(user);
+        ResponseEntity<?> response = userController.registerUser(user);
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-//         Assertions.assertThat(response.getBody()).isEqualTo("Email already exists");
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        Assertions.assertThat(response.getBody()).isEqualTo("Email already exists");
+    }
 
-//     @Test
-//     public void testLogin() {
-//     	Authentication authentication = Mockito.mock(Authentication.class);
-//         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
-//         SecurityContextHolder.getContext().setAuthentication(authentication);
-//         when(jwtGenerator.generateToken(authentication)).thenReturn("jwtToken");
-//         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
+    @Test
+    public void testLogin() {
+    	Authentication authentication = Mockito.mock(Authentication.class);
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        when(jwtGenerator.generateToken(authentication)).thenReturn("jwtToken");
+        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
 
-//         ResponseEntity<AuthResponseDTO> response = userController.login("test@test.com", "password");
+        ResponseEntity<AuthResponseDTO> response = userController.login("test@test.com", "password");
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//         Assertions.assertThat(response.getBody().getAccessToken()).isEqualTo("jwtToken");
-//         Assertions.assertThat(response.getBody().getEmail()).isEqualTo("test@test.com");
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody().getAccessToken()).isEqualTo("jwtToken");
+        Assertions.assertThat(response.getBody().getEmail()).isEqualTo("test@test.com");
+    }
 
-//     @Test
-//     public void testForgotPassword() {
-//         when(userService.verifyUser(any(String.class), any(String.class))).thenReturn(user);
+    @Test
+    public void testForgotPassword() {
+        when(userService.verifyUser(any(String.class), any(String.class))).thenReturn(user);
 
-//         ResponseEntity<User> response = userController.forgotPassword("Test User", "1234567890");
+        ResponseEntity<User> response = userController.forgotPassword("Test User", "1234567890");
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//         Assertions.assertThat(response.getBody()).isEqualTo(user);
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody()).isEqualTo(user);
+    }
 
-//     @Test
-//     public void testForgotPassword_UserNotFound() {
-//         when(userService.verifyUser(any(String.class), any(String.class))).thenReturn(null);
+    @Test
+    public void testForgotPassword_UserNotFound() {
+        when(userService.verifyUser(any(String.class), any(String.class))).thenReturn(null);
 
-//         ResponseEntity<User> response = userController.forgotPassword("Test User", "1234567890");
+        ResponseEntity<User> response = userController.forgotPassword("Test User", "1234567890");
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//         Assertions.assertThat(response.getBody()).isNull();
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        Assertions.assertThat(response.getBody()).isNull();
+    }
 
-//     @Test
-//     public void testResetPassword() {
-//     	when(passwordEncoder.encode(any(String.class))).thenReturn("encodedNewPassword");
-//         when(userService.updateUser(any(Long.class), any(String.class))).thenReturn(user);
+    @Test
+    public void testResetPassword() {
+    	when(passwordEncoder.encode(any(String.class))).thenReturn("encodedNewPassword");
+        when(userService.updateUser(any(Long.class), any(String.class))).thenReturn(user);
 
-//         ResponseEntity<User> response = userController.resetPassword(1L, "newPassword");
+        ResponseEntity<User> response = userController.resetPassword(1L, "newPassword");
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//         Assertions.assertThat(response.getBody()).isEqualTo(user);
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody()).isEqualTo(user);
+    }
 
-//     @Test
-//     public void testResetPassword_UserNotFound() {
-//         when(userService.updateUser(any(Long.class), any(String.class))).thenReturn(null);
+    @Test
+    public void testResetPassword_UserNotFound() {
+        when(userService.updateUser(any(Long.class), any(String.class))).thenReturn(null);
 
-//         ResponseEntity<User> response = userController.resetPassword(1L, "newPassword");
+        ResponseEntity<User> response = userController.resetPassword(1L, "newPassword");
 
-//         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-//         Assertions.assertThat(response.getBody()).isNull();
-//     }
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        Assertions.assertThat(response.getBody()).isNull();
+    }
     
-//     @Test
-//     public void testSaveJob() throws Exception{
-//     	when(userService.hasUserSavedJob(1L, 1L)).thenReturn(false);
-//         doNothing().when(userService).saveJob(1L, 1L);
+    @Test
+    public void testSaveJob() throws Exception{
+    	when(userService.hasUserSavedJob(1L, 1L)).thenReturn(false);
+        doNothing().when(userService).saveJob(1L, 1L);
 
-//         mockMvc.perform(post("/users/jobs/save")
-//                 .param("id", "1")
-//                 .param("user_id", "1"))
-//                 .andExpect(status().isOk())
-//                 .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo("Job saved successfully."));
-//     }
+        mockMvc.perform(post("/users/jobs/save")
+                .param("id", "1")
+                .param("user_id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo("Job saved successfully."));
+    }
     
-//     @Test
-//     public void testGetSavedJobs() throws Exception {
-//         List<JobDTO> savedJobs = new ArrayList<>();
-//         savedJobs.add(jobService.convertToDTO(job));
-//         when(jobService.getSavedJobs(1L)).thenReturn(savedJobs);
+    @Test
+    public void testGetSavedJobs() throws Exception {
+        List<JobDTO> savedJobs = new ArrayList<>();
+        savedJobs.add(jobService.convertToDTO(job));
+        when(jobService.getSavedJobs(1L)).thenReturn(savedJobs);
 
-//         mockMvc.perform(get("/users/getsavedjobs")
-//                 .param("userId", "1"))
-//                 .andExpect(status().isOk())
-//                 .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isNotEmpty());
-//     }
-// }
+        mockMvc.perform(get("/users/getsavedjobs")
+                .param("userId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(result -> Assertions.assertThat(result.getResponse().getContentAsString()).isNotEmpty());
+    }
+}
