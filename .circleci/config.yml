@@ -43,6 +43,3 @@ workflows:
     jobs:
       - test-node
       - test-java
-          filters:
-            branches:
-              only: main

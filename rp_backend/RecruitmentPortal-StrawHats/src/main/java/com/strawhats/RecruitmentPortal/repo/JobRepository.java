@@ -12,4 +12,5 @@ import com.strawhats.RecruitmentPortal.model.User;
 public interface JobRepository extends JpaRepository<Job, Long> {
 	List<Job> findBySkillsRequiredContaining(String skill);
 	List<Job> findByApplicants(User user);
+	List<Job> findBySavedJobsApplicants(User user);
 }

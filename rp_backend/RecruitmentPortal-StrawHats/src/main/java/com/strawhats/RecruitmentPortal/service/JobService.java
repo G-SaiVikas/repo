@@ -35,7 +35,7 @@ public class JobService {
                              .collect(Collectors.toList());
     }
     public List<JobDTO> getSavedJobs(Long userId){
-    	return jobRepository.findByApplicants(userRepository.findById(userId).get()).stream()
+    	return jobRepository.findBySavedJobsApplicants(userRepository.findById(userId).get()).stream()
 				.map(this::convertToDTO)
 				.collect(Collectors.toList());
     }

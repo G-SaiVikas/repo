@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: CSslu@4323
+      MYSQL_HOST: root 
+      MYSQL_DATABASE: rpdb
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ./db_injectors/injectionQueries.sql:/docker-entrypoint-initdb.d/injection.sql
+    networks:
+      - backend_network
+  backend:
+    build:
+      context: ./rp_backend/RecruitmentPortal-StrawHats
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - db
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
+    networks:
+      - backend_network
+      - frontend_network
+  frontend:
+    build:
+      context: ./rp_frontend/rp_portal
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    depends_on:
+      - db
+      - backend
+    networks:
+      - frontend_network
+  
+networks:
+  backend_network:
+  frontend_network:
