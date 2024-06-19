@@ -43,7 +43,7 @@ jobs:
 
   build-and-push:
     docker:
-      - image: maven:3.8.4-openjdk-17
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - setup_remote_docker:
@@ -60,7 +60,7 @@ jobs:
             apt-get update
             apt-get install -y docker-ce-cli
 
-            
+
       - run:
           name: Install Docker Compose
           command: |
