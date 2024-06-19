@@ -1,5 +1,6 @@
 # Recruitment Portal: Job Search and Application System
 
+[Uploading Dockerfile.txt…]()
 
 # Introduction 
 The Recruitment Portal project is designed to simplify the job search and application process for job seekers. It offers a user-friendly interface for browsing available jobs, applying to them, and saving them for future applications. Built using Spring Boot, MySQL, and React, this application aims to streamline the recruitment process by providing essential functionalities like user authentication, job search filters, and job application tracking.
