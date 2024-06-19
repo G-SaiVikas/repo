@@ -74,17 +74,17 @@ jobs:
       - run:
           name: Authenticate with Docker Hub
           command: |
-            echo "$DOCKERHUB_VToken" | docker login --username $DOCKERHUB_Vusername --password-stdin
+            echo "$DOCKERHUB_RTOKEN" | docker login --username $DOCKERHUB_RUSERNAME --password-stdin
       - run:
           name: Tag the docker containers with latest tag
           command: |
-            docker tag project-frontend:latest saivikas23/recruitment_portal-frontend:${CIRCLE_SHA1}
-            docker tag project-backend:latest saivikas23/recruitment_portal-backend:${CIRCLE_SHA1}
+            docker tag project-frontend:latest rlanka1/recruitment_portal-frontend:${CIRCLE_SHA1}
+            docker tag project-backend:latest rlanka1/recruitment_portal-backend:${CIRCLE_SHA1}
       - run:
           name: Push the docker containers to docker hub
           command: |
-            docker push saivikas23/recruitment_portal-backend:${CIRCLE_SHA1}
-            docker push saivikas23/recruitment_portal-frontend:${CIRCLE_SHA1}
+            docker push rlanka1/recruitment_portal-backend:${CIRCLE_SHA1}
+            docker push rlanka1/recruitment_portal-frontend:${CIRCLE_SHA1}
 
 workflows:
   build-and-test:
