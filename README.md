@@ -1,6 +1,5 @@
 # Recruitment Portal: Job Search and Application System
 
-[Uploading Dockerfile.txt…]()
 
 # Introduction 
 The Recruitment Portal project is designed to simplify the job search and application process for job seekers. It offers a user-friendly interface for browsing available jobs, applying to them, and saving them for future applications. Built using Spring Boot, MySQL, and React, this application aims to streamline the recruitment process by providing essential functionalities like user authentication, job search filters, and job application tracking.
@@ -34,7 +33,7 @@ Our application follows a multi-tier architecture:
 # Running the Application Locally 
 
 **Method 1: Using Docker Compose**
-  1. Download the Docker Compose YAML file: Click to Download Docker Compose YAML  
+  1. Download the Docker Compose YAML file: <a href="https://github.com/G-SaiVikas/repo/blob/main/docker-compose.yml">Click to Download Docker Compose YAML</a>  
   
   2. Run the command in the terminal:  
   ```bash
@@ -49,8 +48,7 @@ Our application follows a multi-tier architecture:
   ```bash
   
   cd recruitment-portal-backend
-  ./gradlew build
-  ./gradlew bootRun
+  ./mvn verify
   ```
   3. Build and run the frontend:
   
@@ -65,7 +63,7 @@ Our application follows a multi-tier architecture:
   
   ```bash
   cd recruitment-portal-backend  
-  ./gradlew bootRun
+  ./mvn verify
   ```
   -> To start the frontend:  
   
