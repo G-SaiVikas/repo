@@ -53,6 +53,7 @@ jobs:
       - run:
           name: Install Docker
           command: |
+            sudo -i
             apt-get update
             apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
             curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
@@ -64,11 +65,13 @@ jobs:
       - run:
           name: Install Docker Compose
           command: |
+            sudo -i
             curl -L "https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
       - run:
           name: Build the Java Jars
           command: |
+          
             cd rp_backend/RecruitmentPortal-StrawHats && mvn clean package && cd ..
       - run:
           name: Test the Jar exists
