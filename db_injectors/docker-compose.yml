@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: CSslu@4323
+      MYSQL_HOST: root 
+      MYSQL_DATABASE: rpdb
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ./injectionQueries.sql:/docker-entrypoint-initdb.d/injection.sql
+    networks:
+      - rp_backend_network
+
+  rp_backend:
+    image: saidugyala/recruitment_portal-backend:8dc37b85fc00e75505826e2aab2eb2ca48dae736
+    restart: always
+    container_name: RP_Backend
+    ports:
+      - 8080:8080
+    networks:
+      - rp_frontend_network
+      - rp_backend_network
+    depends_on:
+      - db
+    expose:
+      - 8080
+
+  rp_frontend:
+    image: saidugyala/recruitment_portal-frontend:8dc37b85fc00e75505826e2aab2eb2ca48dae736
+    restart: always
+    container_name: RP_Portal
+    ports:
+      - 3000:3000
+    networks:
+      - rp_frontend_network
+    expose:
+      - 3000
+    depends_on:
+      - db
+      - rp_backend
+
+networks:
+  rp_backend_network:
+  rp_frontend_network:
