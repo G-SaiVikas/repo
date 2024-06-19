@@ -4,7 +4,6 @@ orbs:
 
 jobs:
   test-node:
-    # Install node dependencies and run tests
     executor: node/default
     working_directory: ~/project/rp_frontend/rp_portal
     steps:
@@ -18,23 +17,21 @@ jobs:
 
   test-java:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: maven:3.8.4-openjdk-17
     working_directory: ~/project/rp_backend/RecruitmentPortal-StrawHats
     steps:
       - checkout:
           path: ~/project
       - run:
-          name: Set execute permission for mvnw
-          command: chmod +x ./mvnw
-      - run:
           name: Calculate cache key
           command: |-
-            find . -name 'pom.xml' -o -name 'mvnw*' -o -name '*.maven*' | \
+            find . -name 'pom.xml' -o -name '*.maven*' | \
                     sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
       - restore_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
       - run:
-          command: ./mvnw verify
+          name: Run Maven verify
+          command: mvn verify
       - store_test_results:
           path: target/surefire-reports
       - save_cache:
@@ -46,7 +43,7 @@ jobs:
 
   build-and-push:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: maven:3.8.4-openjdk-17
     steps:
       - checkout
       - setup_remote_docker:
@@ -58,12 +55,9 @@ jobs:
             sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
       - run:
-          name: Set execute permission for mvnw
-          command: chmod +x ./mvnw
-      - run:
           name: Build the Java Jars
           command: |
-            cd rp_backend/RecruitmentPortal-StrawHats && ./mvnw clean package && cd ..
+            cd rp_backend/RecruitmentPortal-StrawHats && mvn clean package && cd ..
       - run:
           name: Test the Jar exists
           command: |
